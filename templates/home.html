@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Exam Performance</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2933;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+        }
+
+        main {
+            width: 100%;
+            max-width: 720px;
+            background: #ffffff;
+            border: 1px solid #d9e2ec;
+            border-radius: 8px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            font-size: 28px;
+            line-height: 1.2;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        select,
+        input {
+            width: 100%;
+            min-height: 42px;
+            border: 1px solid #bcccdc;
+            border-radius: 6px;
+            padding: 9px 10px;
+            font-size: 15px;
+            background: #ffffff;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        button {
+            min-height: 44px;
+            border: 0;
+            border-radius: 6px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 22px;
+            padding: 16px;
+            border-radius: 6px;
+            background: #e0f2fe;
+            border: 1px solid #7dd3fc;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding: 22px;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Student Exam Performance Prediction</h1>
+
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            <div>
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="ethnicity">Race or Ethnicity</label>
+                <select id="ethnicity" name="ethnicity" required>
+                    <option value="group A">Group A</option>
+                    <option value="group B">Group B</option>
+                    <option value="group C">Group C</option>
+                    <option value="group D">Group D</option>
+                    <option value="group E">Group E</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="parental_level_of_education">Parental Education</label>
+                <select id="parental_level_of_education" name="parental_level_of_education" required>
+                    <option value="some high school">Some high school</option>
+                    <option value="high school">High school</option>
+                    <option value="some college">Some college</option>
+                    <option value="associate's degree">Associate's degree</option>
+                    <option value="bachelor's degree">Bachelor's degree</option>
+                    <option value="master's degree">Master's degree</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="lunch">Lunch</label>
+                <select id="lunch" name="lunch" required>
+                    <option value="standard">Standard</option>
+                    <option value="free/reduced">Free/reduced</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="test_preparation_course">Test Preparation</label>
+                <select id="test_preparation_course" name="test_preparation_course" required>
+                    <option value="none">None</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="reading_score">Reading Score</label>
+                <input id="reading_score" name="reading_score" type="number" min="0" max="100" value="70" required>
+            </div>
+
+            <div>
+                <label for="writing_score">Writing Score</label>
+                <input id="writing_score" name="writing_score" type="number" min="0" max="100" value="70" required>
+            </div>
+
+            <button class="full" type="submit">Predict Math Score</button>
+        </form>
+
+        {% if results is defined %}
+            <div class="result">Predicted math score: {{ "%.2f"|format(results) }}</div>
+        {% endif %}
+    </main>
+</body>
+</html>
